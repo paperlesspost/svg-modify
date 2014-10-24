@@ -221,7 +221,9 @@ svgmodify.makeChanges = function(params) {
             destPath = destFolder + fileNameExt,
             fileOptions = {};
 
-        if (config && config[fileName]) {
+        if (config && (config[fileName] || config["all"])) {
+            var trueFileName = fileName;
+            fileName = config[fileName] ? fileName : "all";
 
             fileOptions = config[fileName];
             fileOptions["colorize"] = colorize;
@@ -242,7 +244,7 @@ svgmodify.makeChanges = function(params) {
             }
             // create variations of file
             fileOptions.forEach(function(props) {
-                destPath = destFolder + svgmodify.fileNameModf(fileName, props) + ".svg";
+                destPath = destFolder + svgmodify.fileNameModf(trueFileName, props) + ".svg";
                 if (defaults) {
                     props["defaults"] = defaults[fileName];
                 }
