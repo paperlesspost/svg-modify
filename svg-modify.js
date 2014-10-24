@@ -3,6 +3,11 @@ var svgmodify = {};
 var path = require('path'),
     grunt = require('grunt');
 
+var defaultSize = {
+    width: 50,
+    height: 50
+}
+
 /**
  * @param {string} filePath
  * @returns {
@@ -58,6 +63,10 @@ function getSVGAttrs(input) {
  */
 function changeAttrs(attrsObj, newAttrsObj) {
 
+    if (!newAttrsObj["width"] && !newAttrsObj["height"]) {
+        newAttrsObj["width"] = defaultSize.width;
+    }
+
     for (var key in newAttrsObj) {
         var oldWidth, newWidth, oldHeight, newHeight;
 
@@ -67,6 +76,8 @@ function changeAttrs(attrsObj, newAttrsObj) {
             oldHeight = parseFloat(attrsObj["height"]);
             newHeight = newWidth / oldWidth * oldHeight;
 
+            newHeight = newHeight && !isNaN(newHeight) ? newHeight : newAttrsObj[key];
+
             attrsObj["height"] = newHeight + "px";
             attrsObj[key] = newAttrsObj[key] + "px";
         } else if (key === "height") {
@@ -75,6 +86,8 @@ function changeAttrs(attrsObj, newAttrsObj) {
 
             oldWidth = parseFloat(attrsObj["width"]);
             newWidth = newHeight / oldHeight * oldWidth;
+
+            newWidth = newWidth && !isNaN(newWidth) ? newWidth : newAttrsObj[key];
 
             attrsObj["width"] = newWidth + "px";
             attrsObj[key] = newAttrsObj[key] + "px";
