@@ -244,7 +244,8 @@ svgmodify.makeChanges = function(params) {
             }
             // create variations of file
             fileOptions.forEach(function(props) {
-                destPath = destFolder + svgmodify.fileNameModf(trueFileName, props) + ".svg";
+                var extensionProps = props["extension"] ? {extension: props["extension"]} : props;
+                destPath = destFolder + svgmodify.fileNameModf(trueFileName, extensionProps) + ".svg";
                 if (defaults) {
                     props["defaults"] = defaults[fileName];
                 }
