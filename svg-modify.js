@@ -275,50 +275,27 @@ svgmodify.makeChanges = function(params) {
         }
 
         if (Array.isArray(fileOptions)) {
-            // if we are using the 'use' method
-            if (true) {
-                if (svgmodify.defaultColor) {
-                    if (defaults) {
-                        fileOptions["defaults"] = defaults[fileName];
-                    }
-                    changeSVG(filePath, destPath, fileOptions);
-                } else {
-                    grunt.file.copy(filePath, destPath);
+            if (svgmodify.defaultColor) {
+                if (defaults) {
+                    fileOptions["defaults"] = defaults[fileName];
                 }
-                var svg = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" xml:space="preserve">';
-                // create variations of file
-                fileOptions.forEach(function(props) {
-                    if (defaults) {
-                        props["defaults"] = defaults[fileName];
-                    }
-                    svg += changeBody(filePath, props, trueFileName);
-                });
-                destPath = destFolder + trueFileName + "_colors.svg";
-
-                svg += "</svg>";
-
-                writeSVG(destPath, svg);
+                changeSVG(filePath, destPath, fileOptions);
             } else {
-                // copy initial file, add default color if exist
-                if (svgmodify.defaultColor) {
-                    if (defaults) {
-                        fileOptions["defaults"] = defaults[fileName];
-                    }
-                    changeSVG(filePath, destPath, fileOptions);
-                } else {
-                    grunt.file.copy(filePath, destPath);
-                }
-                // create variations of file
-                fileOptions.forEach(function(props) {
-                    var extensionProps = props["extension"] ? {extension: props["extension"]} : props;
-                    destPath = destFolder + svgmodify.fileNameModf(trueFileName, extensionProps) + ".svg";
-                    if (defaults) {
-                        props["defaults"] = defaults[fileName];
-                    }
-                    changeSVG(filePath, destPath, props);
-                });
+                grunt.file.copy(filePath, destPath);
             }
-            // copy initial file, add default color if exist
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" xml:space="preserve">';
+            // create variations of file
+            fileOptions.forEach(function(props) {
+                if (defaults) {
+                    props["defaults"] = defaults[fileName];
+                }
+                svg += changeBody(filePath, props, trueFileName);
+            });
+            destPath = destFolder + trueFileName + "_colors.svg";
+
+            svg += "</svg>";
+
+            writeSVG(destPath, svg);
             
         } else {
             changeSVG(filePath, destPath, fileOptions);
