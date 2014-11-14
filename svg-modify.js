@@ -275,14 +275,6 @@ svgmodify.makeChanges = function(params) {
         }
 
         if (Array.isArray(fileOptions)) {
-            if (svgmodify.defaultColor) {
-                if (defaults) {
-                    fileOptions["defaults"] = defaults[fileName];
-                }
-                changeSVG(filePath, destPath, fileOptions);
-            } else {
-                grunt.file.copy(filePath, destPath);
-            }
             var svg = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" xml:space="preserve">';
             // create variations of file
             fileOptions.forEach(function(props) {
@@ -291,7 +283,7 @@ svgmodify.makeChanges = function(params) {
                 }
                 svg += changeBody(filePath, props, trueFileName);
             });
-            destPath = destFolder + trueFileName + "_colors.svg";
+            destPath = destFolder + trueFileName + ".svg";
 
             svg += "</svg>";
 
